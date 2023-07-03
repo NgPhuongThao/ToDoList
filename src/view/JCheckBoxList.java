@@ -1,14 +1,18 @@
 package view;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.*;
 import javax.swing.border.*;
 
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class JCheckBoxList extends JList<JCheckBox> {
   protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+  private boolean ticked = false;
 
   public JCheckBoxList() {
     setCellRenderer(new CellRenderer());
@@ -21,12 +25,24 @@ public class JCheckBoxList extends JList<JCheckBox> {
           
           ((DefaultListModel<JCheckBox>) getModel()).removeElementAt(index);
           if (checkbox.isSelected()) { // If task done
+        	  // Cross out the task
+        	  @SuppressWarnings("unchecked")
+        	  Map<TextAttribute, Boolean> attributes = (Map<TextAttribute, Boolean>) getFont().getAttributes();
+        	  attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+        	  checkbox.setFont(new Font(attributes));
+        	  
         	  ((DefaultListModel<JCheckBox>) getModel()).addElement(checkbox); // Put Task last
           }
           else {
+        	  // Remove crossing out the task
+        	  @SuppressWarnings("unchecked")
+        	  Map<TextAttribute, Boolean> attributes = (Map<TextAttribute, Boolean>) getFont().getAttributes();
+        	  attributes.remove(TextAttribute.STRIKETHROUGH);
+        	  checkbox.setFont(new Font(attributes));
+        	  
         	  ((DefaultListModel<JCheckBox>) getModel()).add(0,checkbox); // Put Task first
           }
-          
+          ticked = true;
           repaint();
         }
       }
@@ -51,7 +67,7 @@ public class JCheckBoxList extends JList<JCheckBox> {
       checkbox.setForeground(isSelected ? Utils.BACKGROUND_COLOR
           : getForeground());
       checkbox.setEnabled(isEnabled());
-      checkbox.setFont(getFont());
+      checkbox.setFont(ticked && isSelected ? checkbox.getFont() : getFont());
       checkbox.setFocusPainted(false);
       checkbox.setBorderPainted(true);
       checkbox.setBorder(isSelected ? UIManager
