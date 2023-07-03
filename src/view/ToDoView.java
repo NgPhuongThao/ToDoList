@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -25,16 +24,15 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.GridLayout;
-import java.awt.Color;
 
 public class ToDoView {
-	public static final String ENTER_TASK_NAME = "Enter your task...";
-	
 	private TaskController controller;
 	private JButton addTaskButton;
 	JFrame frmTodoList;
 	private JTextField taskNameEntry;
+	
 	private JTextField taskNameTextfield;
+	private JTextArea taskDescriptionTextfield;
 	
 	private JPanel listPanel;
 	private DefaultListModel<JCheckBox> taskListModel;
@@ -68,18 +66,22 @@ public class ToDoView {
 		taskNameTextfield = new JTextField();
 		taskNameTextfield.setForeground(Utils.GENERAL_COLOR);
 		taskNameTextfield.setBackground(Utils.BACKGROUND_COLOR);
-		taskNameTextfield.setText("Task Name");
 		taskNameTextfield.setFont(new Font(Utils.POLICE, Font.BOLD, 28));
 		taskNameTextfield.setEditable(false);
 		taskDescriptionPanel.add(taskNameTextfield, BorderLayout.NORTH);
 		taskNameTextfield.setColumns(10);
 		
-		JTextArea taskDescriptionTextfield = new JTextArea();
+		taskDescriptionTextfield = new JTextArea();
 		taskDescriptionTextfield.setBackground(Utils.BACKGROUND_COLOR);
 		taskDescriptionTextfield.setForeground(Utils.GENERAL_COLOR);
 		taskDescriptionTextfield.setFont(new Font(Utils.POLICE, Font.PLAIN, 20));
-		taskDescriptionTextfield.setText("Enter task description...");
 		taskDescriptionPanel.add(taskDescriptionTextfield, BorderLayout.CENTER);
+		
+		JButton saveTaskButton = new JButton(Utils.SAVE_CHANGES);
+		saveTaskButton.setForeground(Utils.BACKGROUND_COLOR);
+		saveTaskButton.setBackground(Utils.ACCENT_COLOR);
+		saveTaskButton.setFont(new Font(Utils.POLICE, Font.PLAIN, 20));
+		taskDescriptionPanel.add(saveTaskButton, BorderLayout.SOUTH);
 		
 		JPanel ToDoListPanel = new JPanel();
 		ToDoListPanel.setBackground(Utils.BACKGROUND_COLOR);
@@ -128,31 +130,37 @@ public class ToDoView {
 		taskNameEntry.setForeground(Utils.GENERAL_COLOR);
 		taskNameEntry.setFont(new Font(Utils.POLICE, Font.PLAIN, 20));
 		addTaskPanel.add(taskNameEntry);
-		taskNameEntry.setText(ENTER_TASK_NAME);
+		taskNameEntry.setText(Utils.ENTER_TASK_NAME);
 		taskNameEntry.setColumns(15);
 		
-		addTaskButton = new JButton("Add");
+		addTaskButton = new JButton(Utils.ADD);
 		addTaskButton.setEnabled(false);
 		addTaskButton.setForeground(Utils.BACKGROUND_COLOR);
-		addTaskButton.setBackground(Utils.ACCENT_COLOR);
+		addTaskButton.setBackground(Utils.GENERAL_COLOR);
 		addTaskButton.setFont(new Font(Utils.POLICE, Font.PLAIN, 20));
 		addTaskPanel.add(addTaskButton);
 		
+		// CONTROLLER //
 		this.controller = new TaskController(this);
+		
 		addTaskButton.addActionListener(this.controller);
+		saveTaskButton.addActionListener(this.controller);
 		this.taskNameEntry.addFocusListener(controller);
+		list.addListSelectionListener(controller);
 	}
 
 	public State getState(JButton button) {
 		switch (button.getText()) {
-		case "Add":
+		case Utils.ADD:
 			return State.ADD;
+		case Utils.SAVE_CHANGES:
+			return State.SAVE;
 		}
 		return null;
 	}
 
 	public void addTask() {
-		taskListModel.addElement(new JCheckBox(this.taskNameEntry.getText()));
+		taskListModel.add(0, new JCheckBox(this.taskNameEntry.getText()));
 		
 	}
 
@@ -161,15 +169,29 @@ public class ToDoView {
 			this.addTaskButton.setEnabled(true);
 			this.addTaskButton.setBackground(Utils.ACCENT_COLOR);
 		}
-		else if (newText.equals(ENTER_TASK_NAME)) {
+		else if (newText.equals(Utils.ENTER_TASK_NAME)) {
 			this.addTaskButton.setEnabled(false);
 			this.addTaskButton.setBackground(Utils.GENERAL_COLOR);
 		}
 		this.taskNameEntry.setText(newText);
 	}
-	
+
+	public void setDescriptionPanel(String taskName, String taskDescription) {
+		this.taskNameTextfield.setText(taskName);;
+		this.taskDescriptionTextfield.setText(taskDescription);;
+	}
+
 	public String getTextEntry() {
 		return this.taskNameEntry.getText();
 	}
-
+	
+	// Returns an array of the description Panel
+	public String[] getDescriptionPanel() {
+		String[] descriptionPanel = new String[2];
+		
+		descriptionPanel[0] = this.taskNameTextfield.getText();
+		descriptionPanel[1] = this.taskDescriptionTextfield.getText();
+		
+		return descriptionPanel;
+	}
 }

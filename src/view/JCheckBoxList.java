@@ -18,6 +18,15 @@ public class JCheckBoxList extends JList<JCheckBox> {
         if (index != -1 && e.getX() < 15) {
           JCheckBox checkbox = (JCheckBox) getModel().getElementAt(index);
           checkbox.setSelected(!checkbox.isSelected());
+          
+          ((DefaultListModel<JCheckBox>) getModel()).removeElementAt(index);
+          if (checkbox.isSelected()) { // If task done
+        	  ((DefaultListModel<JCheckBox>) getModel()).addElement(checkbox); // Put Task last
+          }
+          else {
+        	  ((DefaultListModel<JCheckBox>) getModel()).add(0,checkbox); // Put Task first
+          }
+          
           repaint();
         }
       }
@@ -37,9 +46,9 @@ public class JCheckBoxList extends JList<JCheckBox> {
       JCheckBox checkbox = value;
 
       //Drawing checkbox, change the appearance here
-      checkbox.setBackground(isSelected ? getSelectionBackground()
+      checkbox.setBackground(isSelected ? Utils.ACCENT_COLOR
           : getBackground());
-      checkbox.setForeground(isSelected ? getSelectionForeground()
+      checkbox.setForeground(isSelected ? Utils.BACKGROUND_COLOR
           : getForeground());
       checkbox.setEnabled(isEnabled());
       checkbox.setFont(getFont());
