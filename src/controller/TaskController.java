@@ -48,15 +48,16 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 			case SAVE:
 				// Update task
 				Task task = this.taskMap.get(this.currentSelectedTask);
-				
-				String[] descriptionPanel = this.view.getDescriptionPanel();
-				
-				task.setName(descriptionPanel[0]);
-				task.setDescription(descriptionPanel[1]);
-				
-				// Update task map
-				taskMap.remove(this.currentSelectedTask);
-				taskMap.put(task.getName(), task);
+				if (task != null) {
+					String[] descriptionPanel = this.view.getDescriptionPanel();
+					
+					task.setName(descriptionPanel[0]);
+					task.setDescription(descriptionPanel[1]);
+					
+					// Update task map
+					taskMap.remove(this.currentSelectedTask);
+					taskMap.put(task.getName(), task);
+				}
 				break;
 				
 			default:

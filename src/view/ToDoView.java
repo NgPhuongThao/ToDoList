@@ -67,7 +67,6 @@ public class ToDoView {
 		taskNameTextfield.setForeground(Utils.GENERAL_COLOR);
 		taskNameTextfield.setBackground(Utils.BACKGROUND_COLOR);
 		taskNameTextfield.setFont(new Font(Utils.POLICE, Font.BOLD, 28));
-		taskNameTextfield.setEditable(false);
 		taskDescriptionPanel.add(taskNameTextfield, BorderLayout.NORTH);
 		taskNameTextfield.setColumns(10);
 		
