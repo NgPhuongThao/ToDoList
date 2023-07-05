@@ -36,7 +36,6 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 		this.taskMap = taskService.getAllTask();
 		
 		for (Task task : this.taskMap.values()) {
-			System.out.println(task.isChecked());
 			if (task.isChecked()) this.view.addTaskLast(task.getName());
 			else this.view.addTaskFirst(task.getName());
 		}

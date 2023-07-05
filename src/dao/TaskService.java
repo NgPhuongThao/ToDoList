@@ -81,8 +81,8 @@ public class TaskService extends AbstractTaskService {
 		FileWriter file;
 		try {
 			JSONArray data = (JSONArray) PARSER.parse(new FileReader(DATA_PATH));
-			String newFileContent = data.toString().substring(0, data.toString().length() - 1);
-			newFileContent = newFileContent + "," + jsonObject.toJSONString() + "]";
+			String newFileContent = data.toString().substring(1, data.toString().length() - 1);
+			newFileContent = "[" + newFileContent + "," + jsonObject.toJSONString() + "]";
 			
 			// Write in file
 			file = new FileWriter(DATA_PATH);
