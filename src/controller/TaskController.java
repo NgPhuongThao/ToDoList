@@ -79,12 +79,19 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 	public void valueChanged(ListSelectionEvent e) {
 		@SuppressWarnings("unchecked")
 		JList<JCheckBox> list = (JList<JCheckBox>) e.getSource();
-		if (!e.getValueIsAdjusting() && list.getSelectedValue() != null) {//This line prevents double events
-			// Get task name and description to display on the left panel
-			this.currentSelectedTask = list.getSelectedValue().getText();
-			String selectedTaskDescription = this.taskMap.get(this.currentSelectedTask).getDescription();
-			
-			this.view.setDescriptionPanel(this.currentSelectedTask, selectedTaskDescription);
+		if (!e.getValueIsAdjusting()) {//This line prevents double events
+			if (list.getSelectedValue() != null) {
+				this.view.setSaveButton(true);
+				// Get task name and description to display on the left panel
+				this.currentSelectedTask = list.getSelectedValue().getText();
+				String selectedTaskDescription = this.taskMap.get(this.currentSelectedTask).getDescription();
+				
+				this.view.setDescriptionPanel(this.currentSelectedTask, selectedTaskDescription);
+				
+			} else {
+				this.view.setSaveButton(false);
+				this.view.setDescriptionPanel(null, null);
+			}
 	    }
 	}
 }

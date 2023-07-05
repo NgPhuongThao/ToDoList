@@ -33,6 +33,7 @@ public class ToDoView {
 	
 	private JTextField taskNameTextfield;
 	private JTextArea taskDescriptionTextfield;
+	private JButton saveTaskButton;
 	
 	private JPanel listPanel;
 	private DefaultListModel<JCheckBox> taskListModel;
@@ -64,6 +65,7 @@ public class ToDoView {
 		taskDescriptionPanel.setLayout(new BorderLayout(0, 0));
 		
 		taskNameTextfield = new JTextField();
+		taskNameTextfield.setEnabled(false);
 		taskNameTextfield.setForeground(Utils.GENERAL_COLOR);
 		taskNameTextfield.setBackground(Utils.BACKGROUND_COLOR);
 		taskNameTextfield.setFont(new Font(Utils.POLICE, Font.BOLD, 28));
@@ -71,14 +73,16 @@ public class ToDoView {
 		taskNameTextfield.setColumns(10);
 		
 		taskDescriptionTextfield = new JTextArea();
+		taskDescriptionTextfield.setEnabled(false);
 		taskDescriptionTextfield.setBackground(Utils.BACKGROUND_COLOR);
 		taskDescriptionTextfield.setForeground(Utils.GENERAL_COLOR);
 		taskDescriptionTextfield.setFont(new Font(Utils.POLICE, Font.PLAIN, 20));
 		taskDescriptionPanel.add(taskDescriptionTextfield, BorderLayout.CENTER);
 		
-		JButton saveTaskButton = new JButton(Utils.SAVE_CHANGES);
+		saveTaskButton = new JButton(Utils.SAVE_CHANGES);
+		saveTaskButton.setEnabled(false);
 		saveTaskButton.setForeground(Utils.BACKGROUND_COLOR);
-		saveTaskButton.setBackground(Utils.ACCENT_COLOR);
+		saveTaskButton.setBackground(Utils.GENERAL_COLOR);
 		saveTaskButton.setFont(new Font(Utils.POLICE, Font.PLAIN, 20));
 		taskDescriptionPanel.add(saveTaskButton, BorderLayout.SOUTH);
 		
@@ -176,8 +180,11 @@ public class ToDoView {
 	}
 
 	public void setDescriptionPanel(String taskName, String taskDescription) {
-		this.taskNameTextfield.setText(taskName);;
-		this.taskDescriptionTextfield.setText(taskDescription);;
+		this.taskNameTextfield.setText(taskName);
+		this.taskDescriptionTextfield.setText(taskDescription);
+	
+		this.taskNameTextfield.setEnabled(taskName == null ? false : true);
+		this.taskDescriptionTextfield.setEnabled(taskName == null ? false : true);
 	}
 
 	public String getTextEntry() {
@@ -192,5 +199,10 @@ public class ToDoView {
 		descriptionPanel[1] = this.taskDescriptionTextfield.getText();
 		
 		return descriptionPanel;
+	}
+
+	public void setSaveButton(boolean isEnabled) {
+		this.saveTaskButton.setEnabled(isEnabled);
+		saveTaskButton.setBackground(isEnabled ? Utils.ACCENT_COLOR : Utils.GENERAL_COLOR);
 	}
 }
