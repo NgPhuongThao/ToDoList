@@ -1,1 +1,22 @@
-[{"name":"Add a task in to-do list","checked":"true","description":""},{"name":"Add a description to this task","checked":"false","description":""},{"name":"Check if this task has a description","checked":"false","description":"Hey, this task does have a description. Pretty... Descriptive !"},{"name":"Test","checked":false,"description":""},{"name":"Test","checked":false,"description":""},{"name":"Test","checked":false,"description":""}]
+[
+    {
+        "name": "Add a description to this task",
+        "checked": false,
+        "description": ""
+    },
+    {
+        "name": "Check if this task has a description",
+        "checked": false,
+        "description": "Hey, this task does have a description. Pretty... Descriptive !"
+    },
+    {
+        "name": "Add a task in to-do list",
+        "checked": true,
+        "description": ""
+    },
+    {
+        "name": "Test",
+        "checked": false,
+        "description": "Test"
+    }
+]

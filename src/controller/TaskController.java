@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -15,6 +14,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.junit.platform.commons.util.StringUtils;
 
+import dao.TaskService;
 import model.Task;
 import view.ToDoView;
 import view.Utils;
@@ -24,30 +24,45 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 	
 	private ToDoView view;
 	private State state;
+	private TaskService taskService;
 	
 	private Map<String, Task> taskMap;
 	private String currentSelectedTask;
 	
 	public TaskController (ToDoView view) {
 		this.view = view;
-		this.taskMap = new HashMap<>();
+		
+		this.taskService = new TaskService();
+		this.taskMap = taskService.getAllTask();
+		
+		for (Task task : this.taskMap.values()) {
+			System.out.println(task.isChecked());
+			if (task.isChecked()) this.view.addTaskLast(task.getName());
+			else this.view.addTaskFirst(task.getName());
+		}
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JButton) 
 			this.state = this.view.getState((JButton) e.getSource());
-
+		
+		Task task;
 		switch (state) {
 			case ADD:
 				this.view.addTask();
-				taskMap.put(this.view.getTextEntry(), new Task(this.view.getTextEntry()));
+				
+				task = new Task(this.view.getTextEntry());
+				taskMap.put(this.view.getTextEntry(), task);
+				taskService.addTask(task);
+				
 				this.view.setTextEntry(Utils.ENTER_TASK_NAME);
 				break;
 				
 			case SAVE:
 				// Update task
-				Task task = this.taskMap.get(this.currentSelectedTask);
+				task = this.taskMap.get(this.currentSelectedTask);
 				if (task != null) {
 					String[] descriptionPanel = this.view.getDescriptionPanel();
 					
@@ -57,6 +72,7 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 					// Update task map
 					taskMap.remove(this.currentSelectedTask);
 					taskMap.put(task.getName(), task);
+					taskService.updateTask(task);
 				}
 				break;
 				

@@ -17,6 +17,10 @@ import model.Task;
 public class TaskService extends AbstractTaskService {
 	private static final String DATA_PATH = (new File("").getAbsolutePath()) + "/res/todos.json";
 	private static final JSONParser PARSER = new JSONParser();
+	
+	public TaskService () {
+		
+	}
 
 	@Override
 	public Task getTaskByName(String name) {
@@ -27,7 +31,7 @@ public class TaskService extends AbstractTaskService {
 				
 				if (jsonObject.get("name").equals(name)) {
 					Task task = new Task((String) jsonObject.get("name"));
-					task.setCheck(jsonObject.get("checked").equals("true") ? true : false);
+					task.setCheck((boolean) jsonObject.get("checked"));
 					task.setDescription((String) jsonObject.get("description"));
 					
 					return task;
@@ -49,10 +53,10 @@ public class TaskService extends AbstractTaskService {
 			
 			for (Object o : data) {
 				JSONObject jsonObject = (JSONObject) o;
-				
-				Task task = new Task((String) jsonObject.values().toArray()[0]);
-				task.setCheck((boolean) jsonObject.values().toArray()[1]);
-				task.setDescription((String) jsonObject.values().toArray()[2]);
+
+				Task task = new Task((String) jsonObject.get("name"));
+				task.setCheck((boolean) jsonObject.get("checked") ? true : false);
+				task.setDescription((String) jsonObject.get("description"));
 					
 				allTasks.put(task.getName(), task);
 			}
@@ -67,6 +71,8 @@ public class TaskService extends AbstractTaskService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addTask(Task task) {
+		removeTask(task.getName());
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("name", task.getName());
 		jsonObject.put("checked", task.isChecked());
@@ -103,7 +109,6 @@ public class TaskService extends AbstractTaskService {
 				
 				if (taskName.equals((String) jsonObject.get("name").toString())) {
 					data.remove(o);
-					System.out.println(data);
 					
 					// Write in file
 					FileWriter file = new FileWriter(DATA_PATH);

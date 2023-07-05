@@ -49,7 +49,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "{\"name\":\"" + this.name 
-				+ "\",\"checked\":\"" + this.checked 
-				+ "\",description:\"" + this.description + "\"}";
+				+ "\",\"checked\":" + this.checked 
+				+ ",description:\"" + this.description + "\"}";
 	}
 }
