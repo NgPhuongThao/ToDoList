@@ -152,6 +152,7 @@ public class ToDoView {
 		saveTaskButton.addActionListener(this.controller);
 		this.taskNameEntry.addFocusListener(controller);
 		list.addListSelectionListener(controller);
+		this.frmTodoList.addKeyListener(controller);
 	}
 
 	public State getState(JButton button) {
@@ -217,5 +218,9 @@ public class ToDoView {
 	public void setSaveButton(boolean isEnabled) {
 		this.saveTaskButton.setEnabled(isEnabled);
 		saveTaskButton.setBackground(isEnabled ? Utils.ACCENT_COLOR : Utils.GENERAL_COLOR);
+	}
+
+	public void clickAdd() {
+		this.addTaskButton.doClick();
 	}
 }

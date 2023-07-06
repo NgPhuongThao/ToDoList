@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -19,7 +21,7 @@ import model.Task;
 import view.ToDoView;
 import view.Utils;
 
-public class TaskController implements ActionListener, FocusListener, ListSelectionListener{
+public class TaskController implements ActionListener, FocusListener, ListSelectionListener, KeyListener {
 	public enum State {ADD, ENTER_TEXT_NAME, SAVE};
 	
 	private ToDoView view;
@@ -108,5 +110,22 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 				this.view.setDescriptionPanel(null, null);
 			}
 	    }
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) this.view.clickAdd();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
