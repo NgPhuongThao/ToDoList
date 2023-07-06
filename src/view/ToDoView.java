@@ -24,7 +24,6 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.GridLayout;
-import java.awt.font.TextAttribute;
 import java.util.Map;
 
 public class ToDoView {
@@ -153,6 +152,7 @@ public class ToDoView {
 		this.taskNameEntry.addFocusListener(controller);
 		list.addListSelectionListener(controller);
 		this.frmTodoList.addKeyListener(controller);
+		this.taskNameEntry.addKeyListener(controller);
 	}
 
 	public State getState(JButton button) {

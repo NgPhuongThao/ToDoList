@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -114,7 +115,12 @@ public class TaskController implements ActionListener, FocusListener, ListSelect
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getSource() instanceof JTextField) {
+			JTextField textfield = (JTextField) e.getSource();
+			
+			if (textfield.getText().length() >= 35 ) // limit textfield to 3 characters
+	            e.consume(); 
+		}
 		
 	}
 
